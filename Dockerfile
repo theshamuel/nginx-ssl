@@ -2,7 +2,6 @@ FROM nginx:1.23.4-alpine3.17
 
 LABEL org.opencontainers.image.source https://github.com/theshamuel/nginx-ssl
 
-ENV GOPATH /go
 ENV LEGO_VERSION="4.11.0"
 
 ADD etc/nginx.conf /etc/nginx/nginx.conf
