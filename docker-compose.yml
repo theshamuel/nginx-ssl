@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  nginx:
+    build: .
+    image: ghcr.io/theshamuel/nginx-ssl:v1.0.0
+    hostname: nginx
+    restart: always
+    container_name: nginx
+    volumes:
+      - ./etc/ssl:/etc/nginx/ssl
+      - /etc/hosts:/etc/hosts:ro
+      - <CONF.D>:/etc/nginx/conf.d
+      - <HTML_DIR>:/usr/share/nginx/html:ro
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "5"
+
+    ports:
+      - "8087:80"
+      - "4438:443"
+
+    environment:
+      #VSCALE TOKEN
+      - VSCALE_API_TOKEN=
+      - VSCALE_TTL=300
+      - VSCALE_POLLING_INTERVAL=20
+      - VSCALE_PROPAGATION_TIMEOUT=600
+      #DO TOKEN
+      - DO_AUTH_TOKEN=
+      - DO_TTL=300
+      - DO_POLLING_INTERVAL=20
+      - DO_PROPAGATION_TIMEOUT=600
+      #LETSENCRYPT
+      - LETSENCRYPT=false
+      - EMAIL=email@email.com
+      - DOMAIN=www.domain.com
+      # it supports: vscale or do if you need more see: https://go-acme.github.io/lego/dns/ and add certain envs
+      - DNS_PROVIDER=
+
+networks:
+  default:
+    name: nginx-network
